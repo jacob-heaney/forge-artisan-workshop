@@ -1,25 +1,25 @@
 import logo from './logo.svg';
 import './App.css';
+import {useEffect, useState} from "react";
 
-function App() {
+
+export default function App() {
+    const [paper, setPaper] = useState({})
+
+
+  useEffect(() => {
+    // GET request using fetch inside useEffect React hook
+    fetch('http://127.0.0.1:8000/paper/')
+        .then(response => response.json())
+        .then(actualData => {
+          setPaper(actualData)
+          console.log(actualData);
+        });
+
+// empty dependency array means this effect will only run once (like componentDidMount in classes)
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <p>{paper[0]?.contents}</p>
   );
 }
-
-export default App;

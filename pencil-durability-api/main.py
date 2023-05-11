@@ -1,10 +1,24 @@
 from fastapi import FastAPI
+from starlette.middleware.cors import CORSMiddleware
 
 from pencil_durability.paper import Paper
 from pencil_durability.pencil import Pencil
 
 app = FastAPI()
 
+origins = [
+    "https://localhost:3000",
+    "http://localhost:3000"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["POST", "GET"],
+		allow_headers=["*"],
+    max_age=3600,
+)
 
 pencils = []
 sheets_of_paper = []
