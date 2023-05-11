@@ -1,27 +1,44 @@
-from typing import Union
-
 from fastapi import FastAPI
-from pydantic import BaseModel
+
+from pencil_durability.paper import Paper
+from pencil_durability.pencil import Pencil
 
 app = FastAPI()
 
 
-class Item(BaseModel):
-    name: str
-    price: float
-    is_offer: Union[bool, None] = None
+pencils = []
+sheets_of_paper = []
 
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
+@app.get("/pencil/")
+def get_pencils():
+    return pencils
 
 
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
+@app.post("/pencil/")
+def create_pencil(pencil: Pencil):
+    pencils.append(pencil)
+    return pencil
 
 
-@app.put("/items/{item_id}")
-def update_item(item_id: int, item: Item):
-    return {"item_name": item.name, "item_id": item_id}
+@app.get("/paper/")
+def get_paper():
+    return sheets_of_paper
+
+
+@app.post("/paper/")
+def create_paper(paper: Paper):
+    sheets_of_paper.append(paper)
+    return paper
+
+
+@app.post("/write/")
+def write(text_to_write: str):
+    stored_pencil().write(text_to_write, stored_paper())
+
+
+def stored_pencil() -> Pencil:
+    return pencils[0]
+
+def stored_paper() -> Paper:
+    return sheets_of_paper[0]
