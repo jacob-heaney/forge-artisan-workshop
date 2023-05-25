@@ -1,4 +1,8 @@
 ## Dev environment setup
+Use pip to install pipenv
+```
+> pip install pipenv
+```
 Clone this repo. With pip and pipenv installed, navigate to the root of the repo (`forge-artisan-workshop/`) and run: 
 ```
 > pipenv install
